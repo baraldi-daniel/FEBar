@@ -1,0 +1,32 @@
+command:
+- uvicorn
+- app:app
+- --host
+- 0.0.0.0
+- --port
+- "8000"
+env:
+- name: APP_CATALOG
+  value: "dadosapp"
+- name: APP_SCHEMA
+  value: "fundalis_ia"
+- name: APP_WAREHOUSE_ID
+  valueFrom: sql-warehouse
+- name: APP_AGENT_SERVICE
+  value: "dadosapp.fundalis_ia.fundalis_agente"
+- name: APP_INFERENCE_TABLE
+  value: "dadosapp.fundalis_ia.fundalis_agente_payload"
+- name: APP_EMB_ENDPOINT
+  value: "system.ai.qwen3-embedding-0-6b"
+- name: APP_RECHUPE_ENDPOINT
+  value: "fundalis_rechupe"
+- name: APP_LB_ENDPOINT
+  value: "projects/fundalis-ia/branches/production/endpoints/primary"
+- name: APP_CDF_CONFIG
+  value: "projects/fundalis-ia/branches/production/databases/databricks-postgres/cdf-configs/cadastro_cdc"
+- name: APP_GENIE_TITLE
+  value: "Fundalis IA — Vendas, Leads & Documentos"
+- name: APP_PRODUTO
+  value: "Fundalis IA"
+- name: APP_GENIE_SPACE_ID
+  valueFrom: genie-space
