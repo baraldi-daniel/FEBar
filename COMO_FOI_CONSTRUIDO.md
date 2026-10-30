@@ -29,6 +29,34 @@ execução estão em [`evidencias/`](evidencias/README.md).
 6. **Memória entre sessões:** a IA mantém notas persistentes (fora do repositório) sobre apps anteriores; foi assim que o
    ponto de partida — um app semelhante feito antes para outro cliente — foi localizado e recriado neste workspace.
 
+## Onde a IA acelerou e onde mudou o trabalho
+
+**Onde acelerou**
+- **Do requisito ao recurso rodando na mesma conversa:** catálogo, Lakebase, CDC, model service com inference table,
+  Genie, endpoint de ML e app foram criados pela IA via CLI/API e testados logo em seguida — a pessoa não precisou
+  escrever código nem comandos.
+- **Iteração de interface a partir de screenshots:** a pessoa mandava uma captura de tela com o que queria mudar
+  (rolagem por bloco, ordem das abas, campos editáveis do rechupe) e recebia a versão nova publicada e conferida.
+- **Diagnóstico pelos logs:** quando o RAG e o cache pararam de funcionar, a IA leu os logs do app, achou a causa (o
+  workspace passou a bloquear chamadas diretas aos endpoints pay-per-token) e migrou tudo para o AI Gateway.
+- **Dados e documentos fictícios** (vendas, 400 leads, PDFs) gerados por script, com formatos que não colidem com dados reais.
+- **Reprodutibilidade:** o `bootstrap.py` foi escrito e validado do zero pela IA; recriar tudo leva ~10 min ([log](evidencias/bootstrap_execucao.log)).
+
+**Onde mudou o trabalho**
+- **Testar virou parte de cada passo:** toda alteração foi verificada no app publicado antes de ser dada como pronta —
+  e vários desvios só apareceram assim (máscara de PII que quebrava o CDC, explicação SHAP cortada, numpy 2 derrubando
+  o treino, id do banco do Lakebase no bootstrap).
+- **Decisões de arquitetura saíram dos testes:** a máscara foi para views dinâmicas porque a column mask quebrava o
+  writer do CDC; o mesmo prompt de guardrail passou a classificar o assunto (alimentando a aba Assuntos); o SHAP foi
+  calculado dentro do modelo servido; o agente virou um grafo LangGraph com Mermaid gerado do próprio código.
+- **Evidência vinda da plataforma, não do app:** para provar OBO e o uso do Genie, a IA rastreou cada consulta no Query
+  History do warehouse e na inference table, em vez de confiar na resposta do próprio app.
+- **O papel humano mudou** de escrever código para definir requisitos, revisar o resultado e decidir: arquitetura do
+  agente (LangGraph dentro do app), o que apagar, quem vê PII e que todo dado é fictício.
+
+**Onde não ajudou:** service policies do AI Gateway só podem ser criadas pela UI (a IA deixou os prompts prontos e o app
+preparado para o bloqueio); esperas longas de provisionamento (endpoint de ML, compute do app) continuaram sendo esperas.
+
 ## Linha do tempo do build
 
 | fase | pedido da pessoa | o que a IA fez |
