@@ -1,0 +1,576 @@
+{
+  "inicio": "2026-10-29T17:57:45+00:00",
+  "chat": [
+    {
+      "pergunta": "Quais os 5 produtos que mais vendem?",
+      "resposta": "Os 5 produtos com maior volume de vendas na Fundalis são:\n\n1. **Componente de Suspensão** — 53.042 peças (R$ 20,7 mi)\n2. **Suporte de Motor** — 52.360 peças (R$ 12,8 mi)\n3. **Braço de Controle** — 50.576 peças (R$ 16,6 mi)\n4. **Bloco de Motor Diesel CGI** — 22.376 peças (R$ 73,4 mi)\n5. **Cubo de Roda** — 21.168 peças (R$ 6,3 mi)\n\nO Componente de Suspensão lidera em volume, mas o Bloco de Motor Diesel CGI se destaca pela maior receita, mesmo com volume menor. Posso detalhar algum deles?",
+      "ferramentas": [
+        "Genie",
+        "Documentos (RAG)"
+      ],
+      "sql_app": "WITH `produtos_ranked` AS (\n  SELECT\n    `produto_nome`,\n    SUM(`volume`) AS `volume_total`,\n    SUM(`valor`) AS `receita_total`,\n    RANK() OVER (ORDER BY SUM(`volume`) DESC) AS `rank_volume`\n  FROM `dadosapp`.`fundalis_ia`.`vendas`\n  WHERE `produto_nome` IS NOT NULL\n    AND `volume` IS NOT NULL\n  GROUP BY `produto_nome`\n)\nSELECT\n  `produto_nome`,\n  `volume_total`,\n  `receita_total`\nFROM `produtos_ranked`\nWHERE `rank_volume` <= 5\nORDER BY `rank_volume`, `produto_nome`",
+      "genie": {
+        "space_id": "01f1d243ce9b112085a163448f7fc129",
+        "conversation_id": "01f1d3c241591daa9338282e33e55f88",
+        "message_id": "01f1d3c241711f88ae3d8748908c8cf0",
+        "statement_id": "01f1d3c2-48f4-1e03-a61e-ad4af6a9cd24"
+      },
+      "fontes": [
+        {
+          "tipo": "DOC",
+          "chunk_id": "catalogo_tecnico_2026.pdf#002",
+          "arquivo": "catalogo_tecnico_2026.pdf",
+          "pagina": 1,
+          "secao": "1. Visão geral",
+          "similaridade": 0.448
+        },
+        {
+          "tipo": "DOC",
+          "chunk_id": "catalogo_tecnico_2026.pdf#001",
+          "arquivo": "catalogo_tecnico_2026.pdf",
+          "pagina": 1,
+          "secao": "Fundalis — Catálogo Técnico de Produtos 2026 (fictício)",
+          "similaridade": 0.398
+        },
+        {
+          "tipo": "DOC",
+          "chunk_id": "politica_comercial_2026.pdf#001",
+          "arquivo": "politica_comercial_2026.pdf",
+          "pagina": 1,
+          "secao": "Fundalis — Política Comercial e Condições de\nFornecimento 2026 (fictício)",
+          "similaridade": 0.395
+        },
+        {
+          "tipo": "DOC",
+          "chunk_id": "manual_qualidade_defeitos.pdf#001",
+          "arquivo": "manual_qualidade_defeitos.pdf",
+          "pagina": 1,
+          "secao": "Fundalis — Manual de Qualidade: Defeitos de Fundição e\nAções Corretivas (fictício)",
+          "similaridade": 0.394
+        },
+        {
+          "tipo": "DOC",
+          "chunk_id": "relatorio_operacoes_3t26.pdf#001",
+          "arquivo": "relatorio_operacoes_3t26.pdf",
+          "pagina": 1,
+          "secao": "Fundalis — Relatório Trimestral de Operações 3T26\n(fictício)",
+          "similaridade": 0.388
+        }
+      ],
+      "conv_id": "27f9acb0-d0cf-4b55-85db-45b9517b2340",
+      "ms": 31464,
+      "genie_api": {
+        "status": "COMPLETED",
+        "conteudo": "Quais os 5 produtos que mais vendem na Fundalis?",
+        "descricao": "Você quer ver os 5 produtos que tiveram o maior volume total de vendas na Fundalis, mostrando também o volume total vendido e a receita total gerada por esses produtos.",
+        "sql": "WITH `produtos_ranked` AS (\n  SELECT\n    `produto_nome`,\n    SUM(`volume`) AS `volume_total`,\n    SUM(`valor`) AS `receita_total`,\n    RANK() OVER (ORDER BY SUM(`volume`) DESC) AS `rank_volume`\n  FROM `dadosapp`.`fundalis_ia`.`vendas`\n  WHERE `produto_nome` IS NOT NULL\n    AND `volume` IS NOT NULL\n  GROUP BY `produto_nome`\n)\nSELECT\n  `produto_nome`,\n  `volume_total`,\n  `receita_total`\nFROM `produtos_ranked`\nWHERE `rank_volume` <= 5\nORDER BY `rank_volume`, `produto_nome`",
+        "statement_id": "01f1d3c2-48f4-1e03-a61e-ad4af6a9cd24",
+        "linhas": 5
+      }
+    },
+    {
+      "pergunta": "Qual a receita por canal de venda?",
+      "resposta": "Aqui está a receita por canal de venda:\n\n- **Exportação:** R$ 110,4 mi\n- **Novos Negócios:** R$ 59,2 mi\n- **Aftermarket:** R$ 55,6 mi\n- **OEM Nacional:** R$ 53,4 mi\n\nA **Exportação** lidera a receita, enquanto o **OEM Nacional** tem o menor valor. Posso ajudar com mais alguma análise?",
+      "ferramentas": [
+        "Genie"
+      ],
+      "sql_app": "SELECT `canal`, SUM(`valor`) AS `receita`\nFROM `dadosapp`.`fundalis_ia`.`vendas`\nWHERE `canal` IS NOT NULL\nGROUP BY `canal`\nORDER BY `receita` DESC",
+      "genie": {
+        "space_id": "01f1d243ce9b112085a163448f7fc129",
+        "conversation_id": "01f1d3c253fd136b85818c3077e7094e",
+        "message_id": "01f1d3c2540912d4bbfe1af7b426dbdc",
+        "statement_id": "01f1d3c2-5751-1b32-8d9b-74a05d283363"
+      },
+      "fontes": [],
+      "conv_id": "f5574834-2b44-497b-887a-29af2f6fecbb",
+      "ms": 22415,
+      "genie_api": {
+        "status": "COMPLETED",
+        "conteudo": "Qual a receita por canal de venda?",
+        "descricao": "Você quer ver a receita total gerada por cada canal de venda.",
+        "sql": "SELECT `canal`, SUM(`valor`) AS `receita`\nFROM `dadosapp`.`fundalis_ia`.`vendas`\nWHERE `canal` IS NOT NULL\nGROUP BY `canal`\nORDER BY `receita` DESC",
+        "statement_id": "01f1d3c2-5751-1b32-8d9b-74a05d283363",
+        "linhas": 4
+      }
+    },
+    {
+      "pergunta": "Quantos leads quentes temos por segmento?",
+      "resposta": "Aqui estão os leads quentes por segmento:\n\n- **Hidrogênio & Energia:** 44\n- **Automotivo Leve:** 42\n- **Off-Road & Agrícola:** 41\n- **Comercial & Caminhões:** 41\n- **Industrial:** 37\n\nNo total são 5 segmentos, com Hidrogênio & Energia na liderança e Industrial com o menor volume. Posso ajudar com mais algum detalhe?",
+      "ferramentas": [
+        "Genie"
+      ],
+      "sql_app": "SELECT `segmento`, COUNT(*) AS `leads_quentes`\nFROM `dadosapp`.`fundalis_ia`.`leads`\nWHERE `classificacao_ia` = 'Quente'\n  AND `segmento` IS NOT NULL\nGROUP BY `segmento`\nORDER BY `leads_quentes` DESC",
+      "genie": {
+        "space_id": "01f1d243ce9b112085a163448f7fc129",
+        "conversation_id": "01f1d3c261e414478bdee4b368996bee",
+        "message_id": "01f1d3c261fa161b901735c23533578b",
+        "statement_id": "01f1d3c2-63f8-1b9d-a415-bdae7b28ce18"
+      },
+      "fontes": [],
+      "conv_id": "f69a00dc-114d-4d70-92cc-2d2f3cb12f98",
+      "ms": 22932,
+      "genie_api": {
+        "status": "COMPLETED",
+        "conteudo": "Quantos leads quentes temos por segmento?",
+        "descricao": "Você quer saber quantos leads classificados como 'Quente' existem em cada segmento, mostrando a contagem de leads quentes por segmento e ordenando do segmento com mais leads para o com menos.",
+        "sql": "SELECT `segmento`, COUNT(*) AS `leads_quentes`\nFROM `dadosapp`.`fundalis_ia`.`leads`\nWHERE `classificacao_ia` = 'Quente'\n  AND `segmento` IS NOT NULL\nGROUP BY `segmento`\nORDER BY `leads_quentes` DESC",
+        "statement_id": "01f1d3c2-63f8-1b9d-a415-bdae7b28ce18",
+        "linhas": 5
+      }
+    },
+    {
+      "pergunta": "Quais foram os 5 leads cadastrados mais recentemente e de quais empresas?",
+      "resposta": "Aqui estão os 5 leads mais recentes (todos de 27/10/2026):\n\n1. **LEAD-000305** — W************* — Grupo Forge (fictícia) — 18:15\n2. **LEAD-000348** — F*************** — Indústria Atlântico (fictícia) — 16:15\n3. **LEAD-000321** — L*************** — Grupo Powertrain (fictícia) — 15:15\n4. **LEAD-000122** — P************* — Cliente Forge (fictícia) — 14:15\n5. **LEAD-000033** — M************* — Indústria Forge (fictícia) — 07:15\n\nPosso ajudar com mais algum detalhe?",
+      "ferramentas": [
+        "Genie",
+        "Documentos (RAG)"
+      ],
+      "sql_app": "WITH ranked_leads AS (\n  SELECT\n    `lead_id`,\n    `cliente_nome`,\n    `empresa`,\n    `data_contato`,\n    ROW_NUMBER() OVER (ORDER BY `data_contato` DESC) AS rn\n  FROM `dadosapp`.`fundalis_ia`.`leads`\n  WHERE `data_contato` IS NOT NULL\n)\nSELECT\n  `lead_id`,\n  `cliente_nome`,\n  `empresa`,\n  `data_contato`\nFROM ranked_leads\nWHERE rn <= 5\nORDER BY `data_contato` DESC;",
+      "genie": {
+        "space_id": "01f1d243ce9b112085a163448f7fc129",
+        "conversation_id": "01f1d3c2706c138182affd90cb099b25",
+        "message_id": "01f1d3c2707c1fb0912c0a6b56416053",
+        "statement_id": "01f1d3c2-7527-187a-9c69-9839587969d0"
+      },
+      "fontes": [
+        {
+          "tipo": "DOC",
+          "chunk_id": "catalogo_tecnico_2026.pdf#003",
+          "arquivo": "catalogo_tecnico_2026.pdf",
+          "pagina": 1,
+          "secao": "2. Especificações de referência por produto",
+          "similaridade": 0.35
+        }
+      ],
+      "conv_id": "7681f14e-2a58-48fa-8872-95ff89fd360b",
+      "ms": 25726,
+      "genie_api": {
+        "status": "COMPLETED",
+        "conteudo": "Quais foram os 5 leads cadastrados mais recentemente e de quais empresas?",
+        "descricao": "Você quer ver os 5 leads cadastrados mais recentemente, incluindo o nome do cliente, a empresa e a data do contato.",
+        "sql": "WITH ranked_leads AS (\n  SELECT\n    `lead_id`,\n    `cliente_nome`,\n    `empresa`,\n    `data_contato`,\n    ROW_NUMBER() OVER (ORDER BY `data_contato` DESC) AS rn\n  FROM `dadosapp`.`fundalis_ia`.`leads`\n  WHERE `data_contato` IS NOT NULL\n)\nSELECT\n  `lead_id`,\n  `cliente_nome`,\n  `empresa`,\n  `data_contato`\nFROM ranked_leads\nWHERE rn <= 5\nORDER BY `data_contato` DESC;",
+        "statement_id": "01f1d3c2-7527-187a-9c69-9839587969d0",
+        "linhas": 5
+      }
+    },
+    {
+      "pergunta": "Qual o desconto para 8 mil peças por ano?",
+      "resposta": "Para 8.000 peças/ano, o desconto é de **6% sobre a tabela**, exigindo contrato anual [politica_comercial_2026.pdf, p. 1].",
+      "ferramentas": [
+        "Documentos (RAG)"
+      ],
+      "sql_app": null,
+      "genie": null,
+      "fontes": [
+        {
+          "tipo": "DOC",
+          "chunk_id": "politica_comercial_2026.pdf#003",
+          "arquivo": "politica_comercial_2026.pdf",
+          "pagina": 1,
+          "secao": "2. Descontos por volume anual",
+          "similaridade": 0.65
+        },
+        {
+          "tipo": "DOC",
+          "chunk_id": "politica_comercial_2026.pdf#002",
+          "arquivo": "politica_comercial_2026.pdf",
+          "pagina": 1,
+          "secao": "1. Condições de pagamento",
+          "similaridade": 0.377
+        }
+      ],
+      "conv_id": "c811ac34-0ecf-4501-afbd-1d0e98f8079d",
+      "ms": 4921
+    }
+  ],
+  "genie_space": {
+    "space_id": "01f1d243ce9b112085a163448f7fc129",
+    "titulo": "Fundalis IA — Vendas, Leads & Documentos",
+    "warehouse_id": "76ebfd04694394df",
+    "tabelas": [
+      "dadosapp.fundalis_ia.culturas",
+      "dadosapp.fundalis_ia.documentos_chunks",
+      "dadosapp.fundalis_ia.leads",
+      "dadosapp.fundalis_ia.perguntas_classificadas",
+      "dadosapp.fundalis_ia.produtos",
+      "dadosapp.fundalis_ia.representantes",
+      "dadosapp.fundalis_ia.unidades",
+      "dadosapp.fundalis_ia.vendas"
+    ],
+    "funcoes": [
+      "dadosapp.fundalis_ia.buscar_documentos"
+    ]
+  },
+  "query_history_genie": [
+    {
+      "statement_id": "01f1d3c2-7527-187a-9c69-9839587969d0",
+      "executed_by": "<usuário>",
+      "executed_as": "<usuário>",
+      "warehouse": "76ebfd04694394df",
+      "status": "FINISHED",
+      "duracao_ms": 921,
+      "linhas": 5,
+      "origem": {
+        "genie_space_id": "01f1d243ce9b112085a163448f7fc129"
+      },
+      "inicio_ms": 1793296756789,
+      "statement_text": "WITH ranked_leads AS (\n  SELECT\n    `lead_id`,\n    `cliente_nome`,\n    `empresa`,\n    `data_contato`,\n    ROW_NUMBER() OVER (ORDER BY `data_contato` DESC) AS rn\n  FROM `dadosapp`.`fundalis_ia`.`leads`\n  WHERE `data_contato` IS NOT NULL\n)\nSELECT\n  `lead_id`,\n  `cliente_nome`,\n  `empresa`,\n  `data_contato`\nFROM ranked_leads\nWHERE rn <= 5\nORDER BY `data_contato` DESC;"
+    },
+    {
+      "statement_id": "01f1d3c2-63f8-1b9d-a415-bdae7b28ce18",
+      "executed_by": "<usuário>",
+      "executed_as": "<usuário>",
+      "warehouse": "76ebfd04694394df",
+      "status": "FINISHED",
+      "duracao_ms": 427,
+      "linhas": 5,
+      "origem": {
+        "genie_space_id": "01f1d243ce9b112085a163448f7fc129"
+      },
+      "inicio_ms": 1793296727961,
+      "statement_text": "SELECT `segmento`, COUNT(*) AS `leads_quentes`\nFROM `dadosapp`.`fundalis_ia`.`leads`\nWHERE `classificacao_ia` = 'Quente'\n  AND `segmento` IS NOT NULL\nGROUP BY `segmento`\nORDER BY `leads_quentes` DESC"
+    },
+    {
+      "statement_id": "01f1d3c2-5751-1b32-8d9b-74a05d283363",
+      "executed_by": "<usuário>",
+      "executed_as": "<usuário>",
+      "warehouse": "76ebfd04694394df",
+      "status": "FINISHED",
+      "duracao_ms": 311,
+      "linhas": 4,
+      "origem": {
+        "genie_space_id": "01f1d243ce9b112085a163448f7fc129"
+      },
+      "inicio_ms": 1793296706734,
+      "statement_text": "SELECT `canal`, SUM(`valor`) AS `receita`\nFROM `dadosapp`.`fundalis_ia`.`vendas`\nWHERE `canal` IS NOT NULL\nGROUP BY `canal`\nORDER BY `receita` DESC"
+    },
+    {
+      "statement_id": "01f1d3c2-48f4-1e03-a61e-ad4af6a9cd24",
+      "executed_by": "<usuário>",
+      "executed_as": "<usuário>",
+      "warehouse": "76ebfd04694394df",
+      "status": "FINISHED",
+      "duracao_ms": 679,
+      "linhas": 5,
+      "origem": {
+        "genie_space_id": "01f1d243ce9b112085a163448f7fc129"
+      },
+      "inicio_ms": 1793296682638,
+      "statement_text": "WITH `produtos_ranked` AS (\n  SELECT\n    `produto_nome`,\n    SUM(`volume`) AS `volume_total`,\n    SUM(`valor`) AS `receita_total`,\n    RANK() OVER (ORDER BY SUM(`volume`) DESC) AS `rank_volume`\n  FROM `dadosapp`.`fundalis_ia`.`vendas`\n  WHERE `produto_nome` IS NOT NULL\n    AND `volume` IS NOT NULL\n  GROUP BY `produto_nome`\n)\nSELECT\n  `produto_nome`,\n  `volume_total`,\n  `receita_total`\nFROM `produtos_ranked`\nWHERE `rank_volume` <= 5\nORDER BY `rank_volume`, `produto_nome`"
+    }
+  ],
+  "query_history_app": [
+    {
+      "executed_by": "<usuário>",
+      "client_application": "Databricks App",
+      "n": 15,
+      "exemplos": [
+        "SELECT lead_id, cliente_nome, email, telefone, documento, empresa, segmento, produto_nome,",
+        " SELECT lead_id, cliente_nome, empresa, produto_nome, segmento, cidade, uf, canal, status,",
+        "SELECT `dadosapp`.`fundalis_ia`.pii_liberado() AS l",
+        "DESCRIBE WITH ranked_leads AS ( SELECT `lead_id`, `cliente_nome`, `empresa`, `data_contato"
+      ]
+    }
+  ],
+  "system_query_history": [],
+  "inference_table": [
+    {
+      "t": "2026-10-29 17:57:46.484",
+      "requester": "<service-principal-do-app>",
+      "status_code": "200",
+      "latency_ms": "1608",
+      "destination_model": "opus48",
+      "etapa": "guardrail_entrada",
+      "pergunta_guardrail": "Quais os 5 produtos que mais vendem?",
+      "assunto": "Vendas & Receita"
+    },
+    {
+      "t": "2026-10-29 17:58:13.122",
+      "requester": "<service-principal-do-app>",
+      "status_code": "200",
+      "latency_ms": "3130",
+      "destination_model": "opus48",
+      "etapa": "sintese",
+      "pergunta_guardrail": "",
+      "assunto": ""
+    },
+    {
+      "t": "2026-10-29 17:58:16.291",
+      "requester": "<service-principal-do-app>",
+      "status_code": "200",
+      "latency_ms": "1497",
+      "destination_model": "opus48",
+      "etapa": "guardrail_saida",
+      "pergunta_guardrail": "",
+      "assunto": ""
+    },
+    {
+      "t": "2026-10-29 17:58:18.664",
+      "requester": "<service-principal-do-app>",
+      "status_code": "200",
+      "latency_ms": "1819",
+      "destination_model": "opus48",
+      "etapa": "guardrail_entrada",
+      "pergunta_guardrail": "Qual a receita por canal de venda?",
+      "assunto": "Vendas & Receita"
+    },
+    {
+      "t": "2026-10-29 17:58:38.005",
+      "requester": "<service-principal-do-app>",
+      "status_code": "200",
+      "latency_ms": "1840",
+      "destination_model": "opus48",
+      "etapa": "sintese",
+      "pergunta_guardrail": "",
+      "assunto": ""
+    },
+    {
+      "t": "2026-10-29 17:58:39.882",
+      "requester": "<service-principal-do-app>",
+      "status_code": "200",
+      "latency_ms": "1133",
+      "destination_model": "opus48",
+      "etapa": "guardrail_saida",
+      "pergunta_guardrail": "",
+      "assunto": ""
+    },
+    {
+      "t": "2026-10-29 17:58:41.885",
+      "requester": "<service-principal-do-app>",
+      "status_code": "200",
+      "latency_ms": "1534",
+      "destination_model": "opus48",
+      "etapa": "guardrail_entrada",
+      "pergunta_guardrail": "Quantos leads quentes temos por segmento?",
+      "assunto": "Leads & Clientes"
+    },
+    {
+      "t": "2026-10-29 17:59:01.274",
+      "requester": "<service-principal-do-app>",
+      "status_code": "200",
+      "latency_ms": "2154",
+      "destination_model": "opus48",
+      "etapa": "sintese",
+      "pergunta_guardrail": "",
+      "assunto": ""
+    },
+    {
+      "t": "2026-10-29 17:59:03.465",
+      "requester": "<service-principal-do-app>",
+      "status_code": "200",
+      "latency_ms": "1289",
+      "destination_model": "opus48",
+      "etapa": "guardrail_saida",
+      "pergunta_guardrail": "",
+      "assunto": ""
+    },
+    {
+      "t": "2026-10-29 17:59:05.624",
+      "requester": "<service-principal-do-app>",
+      "status_code": "200",
+      "latency_ms": "1948",
+      "destination_model": "opus48",
+      "etapa": "guardrail_entrada",
+      "pergunta_guardrail": "Quais foram os 5 leads cadastrados mais recentemente e de quais empresas?",
+      "assunto": "Leads & Clientes"
+    },
+    {
+      "t": "2026-10-29 17:59:27.234",
+      "requester": "<service-principal-do-app>",
+      "status_code": "200",
+      "latency_ms": "2674",
+      "destination_model": "opus48",
+      "etapa": "sintese",
+      "pergunta_guardrail": "",
+      "assunto": ""
+    },
+    {
+      "t": "2026-10-29 17:59:29.947",
+      "requester": "<service-principal-do-app>",
+      "status_code": "200",
+      "latency_ms": "1336",
+      "destination_model": "opus48",
+      "etapa": "guardrail_saida",
+      "pergunta_guardrail": "",
+      "assunto": ""
+    },
+    {
+      "t": "2026-10-29 17:59:32.151",
+      "requester": "<service-principal-do-app>",
+      "status_code": "200",
+      "latency_ms": "1476",
+      "destination_model": "opus48",
+      "etapa": "guardrail_entrada",
+      "pergunta_guardrail": "Qual o desconto para 8 mil pe\\u00e7as por ano?",
+      "assunto": "Política Comercial"
+    },
+    {
+      "t": "2026-10-29 17:59:34.276",
+      "requester": "<service-principal-do-app>",
+      "status_code": "200",
+      "latency_ms": "1248",
+      "destination_model": "opus48",
+      "etapa": "sintese",
+      "pergunta_guardrail": "",
+      "assunto": ""
+    },
+    {
+      "t": "2026-10-29 17:59:35.557",
+      "requester": "<service-principal-do-app>",
+      "status_code": "200",
+      "latency_ms": "1455",
+      "destination_model": "opus48",
+      "etapa": "guardrail_saida",
+      "pergunta_guardrail": "",
+      "assunto": ""
+    }
+  ],
+  "lakebase_conversas": [
+    {
+      "conv_id": "27f9acb0-d0cf-4b55-85db-45b9517b2340",
+      "papel": "user",
+      "conteudo": "Quais os 5 produtos que mais vendem?",
+      "criado_em": "2026-10-29 17:57:46.34932+00"
+    },
+    {
+      "conv_id": "27f9acb0-d0cf-4b55-85db-45b9517b2340",
+      "papel": "assistant",
+      "conteudo": "Os 5 produtos com maior volume de vendas na Fundalis são:\n\n1. **Componente de Suspensão** — 53.042 peças (R$ 20,7 mi)\n2.",
+      "criado_em": "2026-10-29 17:58:17.804046+00"
+    },
+    {
+      "conv_id": "f5574834-2b44-497b-887a-29af2f6fecbb",
+      "papel": "user",
+      "conteudo": "Qual a receita por canal de venda?",
+      "criado_em": "2026-10-29 17:58:18.623352+00"
+    },
+    {
+      "conv_id": "f5574834-2b44-497b-887a-29af2f6fecbb",
+      "papel": "assistant",
+      "conteudo": "Aqui está a receita por canal de venda:\n\n- **Exportação:** R$ 110,4 mi\n- **Novos Negócios:** R$ 59,2 mi\n- **Aftermarket:",
+      "criado_em": "2026-10-29 17:58:41.027785+00"
+    },
+    {
+      "conv_id": "f69a00dc-114d-4d70-92cc-2d2f3cb12f98",
+      "papel": "user",
+      "conteudo": "Quantos leads quentes temos por segmento?",
+      "criado_em": "2026-10-29 17:58:41.84297+00"
+    },
+    {
+      "conv_id": "f69a00dc-114d-4d70-92cc-2d2f3cb12f98",
+      "papel": "assistant",
+      "conteudo": "Aqui estão os leads quentes por segmento:\n\n- **Hidrogênio & Energia:** 44\n- **Automotivo Leve:** 42\n- **Off-Road & Agríc",
+      "criado_em": "2026-10-29 17:59:04.765959+00"
+    },
+    {
+      "conv_id": "7681f14e-2a58-48fa-8872-95ff89fd360b",
+      "papel": "user",
+      "conteudo": "Quais foram os 5 leads cadastrados mais recentemente e de quais empresas?",
+      "criado_em": "2026-10-29 17:59:05.578859+00"
+    },
+    {
+      "conv_id": "7681f14e-2a58-48fa-8872-95ff89fd360b",
+      "papel": "assistant",
+      "conteudo": "Aqui estão os 5 leads mais recentes (todos de 27/10/2026):\n\n1. **LEAD-000305** — W************* — Grupo Forge (fictícia)",
+      "criado_em": "2026-10-29 17:59:31.29446+00"
+    },
+    {
+      "conv_id": "c811ac34-0ecf-4501-afbd-1d0e98f8079d",
+      "papel": "user",
+      "conteudo": "Qual o desconto para 8 mil peças por ano?",
+      "criado_em": "2026-10-29 17:59:32.113669+00"
+    },
+    {
+      "conv_id": "c811ac34-0ecf-4501-afbd-1d0e98f8079d",
+      "papel": "assistant",
+      "conteudo": "Para 8.000 peças/ano, o desconto é de **6% sobre a tabela**, exigindo contrato anual [politica_comercial_2026.pdf, p. 1]",
+      "criado_em": "2026-10-29 17:59:37.023133+00"
+    }
+  ],
+  "lakebase_chunks": [
+    {
+      "chunk_id": "catalogo_tecnico_2026.pdf#001",
+      "arquivo": "catalogo_tecnico_2026.pdf",
+      "pagina": 1,
+      "secao": "Fundalis — Catálogo Técnico de Produtos 2026 (fictício)",
+      "trecho": "Fundalis — Catálogo Técnico de Produtos 2026 (fictício)\nDOCUMENTO FICTÍCIO — criado exclus"
+    },
+    {
+      "chunk_id": "catalogo_tecnico_2026.pdf#002",
+      "arquivo": "catalogo_tecnico_2026.pdf",
+      "pagina": 1,
+      "secao": "1. Visão geral",
+      "trecho": "1. Visão geral\nEste catálogo reúne as famílias de peças fundidas e usinadas oferecidas pel"
+    },
+    {
+      "chunk_id": "catalogo_tecnico_2026.pdf#003",
+      "arquivo": "catalogo_tecnico_2026.pdf",
+      "pagina": 1,
+      "secao": "2. Especificações de referência por produto",
+      "trecho": "2. Especificações de referência por produto\n<table><tr><th>Código</th><th>Produto</th><th>"
+    },
+    {
+      "chunk_id": "manual_qualidade_defeitos.pdf#001",
+      "arquivo": "manual_qualidade_defeitos.pdf",
+      "pagina": 1,
+      "secao": "Fundalis — Manual de Qualidade: Defeitos de Fundição e\nAções Corretivas (fictício)",
+      "trecho": "Fundalis — Manual de Qualidade: Defeitos de Fundição e\nAções Corretivas (fictício)\nDOCUMEN"
+    },
+    {
+      "chunk_id": "politica_comercial_2026.pdf#001",
+      "arquivo": "politica_comercial_2026.pdf",
+      "pagina": 1,
+      "secao": "Fundalis — Política Comercial e Condições de\nFornecimento 2026 (fictício)",
+      "trecho": "Fundalis — Política Comercial e Condições de\nFornecimento 2026 (fictício)\nDOCUMENTO FICTÍC"
+    },
+    {
+      "chunk_id": "politica_comercial_2026.pdf#002",
+      "arquivo": "politica_comercial_2026.pdf",
+      "pagina": 1,
+      "secao": "1. Condições de pagamento",
+      "trecho": "1. Condições de pagamento\nPrazo padrão de 60 dias fora o mês para OEMs com contrato; 30 di"
+    },
+    {
+      "chunk_id": "politica_comercial_2026.pdf#003",
+      "arquivo": "politica_comercial_2026.pdf",
+      "pagina": 1,
+      "secao": "2. Descontos por volume anual",
+      "trecho": "2. Descontos por volume anual\n<table><tr><th>Volume anual (peças)</th><th>Desconto sobre t"
+    },
+    {
+      "chunk_id": "relatorio_operacoes_3t26.pdf#001",
+      "arquivo": "relatorio_operacoes_3t26.pdf",
+      "pagina": 1,
+      "secao": "Fundalis — Relatório Trimestral de Operações 3T26\n(fictício)",
+      "trecho": "Fundalis — Relatório Trimestral de Operações 3T26\n(fictício)\nDOCUMENTO FICTÍCIO — criado e"
+    }
+  ],
+  "lakebase_indices": [
+    {
+      "tablename": "doc_chunks",
+      "indexname": "doc_chunks_hnsw",
+      "indexdef": "CREATE INDEX doc_chunks_hnsw ON agente.doc_chunks USING hnsw (embedding vector_cosine_ops)"
+    },
+    {
+      "tablename": "llm_cache",
+      "indexname": "llm_cache_hnsw",
+      "indexdef": "CREATE INDEX llm_cache_hnsw ON agente.llm_cache USING hnsw (embedding vector_cosine_ops)"
+    }
+  ],
+  "lakebase_plano_rag": [
+    "Limit  (cost=10000000106.08..10000000106.95 rows=6 width=40)",
+    "  InitPlan 1",
+    "    ->  Limit  (cost=10000000000.00..10000000000.03 rows=1 width=32)",
+    "          ->  Seq Scan on doc_chunks doc_chunks_1  (cost=10000000000.00..10000000014.00 rows=400 width=32)",
+    "  ->  Index Scan using doc_chunks_hnsw on doc_chunks  (cost=106.04..164.00 rows=400 width=40)",
+    "        Order By: (embedding <=> (InitPlan 1).col1)"
+  ],
+  "lakebase_cache": [
+    {
+      "entradas": 22,
+      "hits": 1,
+      "escopos": 1
+    }
+  ],
+  "fim": "2026-10-29T18:00:13+00:00"
+}

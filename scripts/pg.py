@@ -1,8 +1,8 @@
-"""Helper: abre conexão psycopg no Lakebase fundalis-ia usando OAuth do CLI (perfil em DATABRICKS_CONFIG_PROFILE). Uso: python3 pg.py "<sql>" | python3 pg.py -f file.sql"""
+"""Helper: abre conexão psycopg no Lakebase usando OAuth do CLI (perfil em DATABRICKS_CONFIG_PROFILE). Uso: python3 pg.py "<sql>" | python3 pg.py -f file.sql"""
 import json, os, subprocess, sys, psycopg
-# configure via variáveis de ambiente (veja .env.example)
+# configure via variáveis de ambiente (gerado pelo bootstrap em .env)
 P = os.environ["DATABRICKS_CONFIG_PROFILE"]
-EP = os.getenv("LAKEBASE_ENDPOINT", "projects/fundalis-ia/branches/production/endpoints/primary")
+EP = os.environ["LAKEBASE_ENDPOINT"]
 HOST = os.environ["LAKEBASE_HOST"]
 USER = os.environ["LAKEBASE_USER"]   # seu e-mail no workspace
 def conn(db="databricks_postgres"):

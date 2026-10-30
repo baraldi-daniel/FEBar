@@ -1548,12 +1548,12 @@ def _rechupe_explica(feats, prob, classe, shap):
               "Explique em português, em 3 a 4 frases curtas e sem markdown, POR QUE o modelo chegou a essa predição: cite os "
               "2 ou 3 fatores de maior impacto com seus valores e a direção do efeito, com a justificativa metalúrgica breve, "
               "e mencione se algum fator puxou no sentido contrário. Use SOMENTE os números acima; não invente valores e não "
-              "dê recomendações que não decorram desses fatores.")
+              "dê recomendações que não decorram desses fatores. No máximo 110 palavras.")
     for ep in RECHUPE_EXTRACT_ENDPOINTS:
         if not ep:
             continue
         try:
-            txt = (_invoke_chat(ep, [{"role": "user", "content": prompt}], max_tokens=350) or "").strip()
+            txt = (_invoke_chat(ep, [{"role": "user", "content": prompt}], max_tokens=900) or "").strip()
             if txt:
                 return txt, ep
         except Exception as e:  # noqa: BLE001
@@ -1770,18 +1770,22 @@ def _genie_answer(pergunta, space_id=None, conv_id=None):
                                 body={"content": pergunta})
         cid, mid = start["conversation_id"], start["message_id"]
     msg = _genie_poll(sid, cid, mid)
-    texto, sql, cols, rows = "", None, [], []
+    texto, sql, cols, rows, stmt = "", None, [], [], None
     for att in msg.get("attachments", []) or []:
         if att.get("text"):
             texto = att["text"].get("content", "")
         if att.get("query"):
             sql = att["query"].get("query")
+            stmt = att["query"].get("statement_id")
             aid = att["attachment_id"]
             qr = _ws().api_client.do("GET", f"/api/2.0/genie/spaces/{sid}/conversations/{cid}/messages/{mid}/attachments/{aid}/query-result")
             sr = qr.get("statement_response", {})
             cols = [c["name"] for c in sr.get("manifest", {}).get("schema", {}).get("columns", [])]
             rows = sr.get("result", {}).get("data_array", []) or []
-    return {"texto": texto, "sql": sql, "colunas": cols, "linhas": rows[:20], "conv_id": cid}
+            stmt = stmt or sr.get("statement_id")
+    # ids p/ rastrear a consulta: Genie API (conversa/mensagem) e system.query.history (statement_id)
+    return {"texto": texto, "sql": sql, "colunas": cols, "linhas": rows[:20], "conv_id": cid,
+            "rastreio": {"space_id": sid, "conversation_id": cid, "message_id": mid, "statement_id": stmt}}
 def _ident(x):
     if not x or not re.match(r"^[A-Za-z0-9_]+$", x):
         raise HTTPException(400, "identificador inválido")

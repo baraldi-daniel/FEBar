@@ -37,6 +37,7 @@ class Estado(TypedDict, total=False):
     docs: list
     genie: dict
     sql: Optional[str]
+    cache_id: Any
     resposta: str
     # escritos pelos ramos paralelos (genie ∥ rag) → precisam de reducer
     cards: Annotated[list, operator.add]
@@ -114,7 +115,7 @@ def construir_grafo(d):
         _passo("cache", f"Resposta em cache (similaridade {sim}) ⚡", "done")
         r = hit["resposta"] if isinstance(hit["resposta"], dict) else json.loads(hit["resposta"])
         return {"escopo": escopo, "emb": emb,
-                "final": {**r, "cache": {"hit": True, "similaridade": sim, "pergunta_original": hit["pergunta"]},
+                "final": {**r, "cache": {"hit": True, "id": hit.get("id"), "similaridade": sim, "pergunta_original": hit["pergunta"]},
                           "assunto": s["guard"]["assunto"], "ferramentas": ["Cache Lakebase"] + (r.get("ferramentas") or [])}}
 
     def resposta_cache(s):
@@ -147,8 +148,8 @@ def construir_grafo(d):
             return {"docs": []}
         _passo("rag", f"RAG · {len(docs)} trecho(s) relevante(s)", "done" if docs else "skip")
         return {"docs": docs, "usadas": ["Documentos (RAG)"] if docs else [],
-                "fontes": [{"tipo": "DOC", "arquivo": x["arquivo"], "pagina": x["pagina"], "secao": x["secao"],
-                            "similaridade": float(x["similaridade"])} for x in docs]}
+                "fontes": [{"tipo": "DOC", "chunk_id": x.get("chunk_id"), "arquivo": x["arquivo"], "pagina": x["pagina"],
+                            "secao": x["secao"], "similaridade": float(x["similaridade"])} for x in docs]}
 
     def sintese(s):
         _passo("resp", "Redigindo a resposta (Opus 4.8)", "run")
@@ -184,7 +185,7 @@ def construir_grafo(d):
                "done" if ok else "block")
         out = {"resposta": resposta, "cards": s.get("cards") or [], "fontes": s.get("fontes") or [],
                "ferramentas": s.get("usadas") or [], "sql": s.get("sql"), "modelo": d.agent_service,
-               "assunto": s["guard"]["assunto"]}
+               "assunto": s["guard"]["assunto"], "genie": (s.get("genie") or {}).get("rastreio")}
         if ok and s.get("emb") is not None:
             try:
                 d.cache_grava(s["q"], s["emb"], s["escopo"], out, s["guard"]["assunto"])

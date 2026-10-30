@@ -1,0 +1,513 @@
+{
+  "gerado_em": "2026-10-29T17:14:38+00:00",
+  "registro": {
+    "modelo": "dadosapp.fundalis_ia.rechupe_model",
+    "aliases": [
+      {
+        "alias_name": "champion",
+        "version_num": 2,
+        "id": "7acdfa08-7f1e-4785-96eb-435c3c602843"
+      }
+    ],
+    "versoes": [
+      {
+        "versao": 1,
+        "status": "READY",
+        "run_id": "a54c9ab55a3743e0b2ca8e76e5f1dd4e",
+        "criado_em": "2026-10-27T20:14:50+00:00",
+        "run_nome": "rechupe_gb",
+        "run_status": "FINISHED",
+        "metricas": {
+          "auc": 0.9005759661788189
+        },
+        "artefatos": [
+          "model"
+        ]
+      },
+      {
+        "versao": 2,
+        "status": "READY",
+        "run_id": "81ad879f948c426bb1d68de1408d3966",
+        "criado_em": "2026-10-28T13:58:21+00:00",
+        "run_nome": "rechupe_gb",
+        "run_status": "FINISHED",
+        "metricas": {
+          "auc": 0.9005759661788189
+        },
+        "artefatos": [
+          "shap_global.json",
+          "model"
+        ]
+      }
+    ]
+  },
+  "endpoint": {
+    "nome": "fundalis_rechupe",
+    "estado": "READY",
+    "update": "NOT_UPDATING",
+    "servindo": [
+      {
+        "modelo": "dadosapp.fundalis_ia.rechupe_model",
+        "versao": "2",
+        "tamanho": "Small",
+        "scale_to_zero": true
+      }
+    ]
+  },
+  "dataset": {
+    "n": "9000",
+    "taxa": "0.416"
+  },
+  "dataset_por_grupo": [
+    {
+      "tipo_ferro": "Cinzento",
+      "usa_massalote": "0",
+      "n": "2024",
+      "taxa_rechupe": "0.583"
+    },
+    {
+      "tipo_ferro": "Cinzento",
+      "usa_massalote": "1",
+      "n": "2082",
+      "taxa_rechupe": "0.155"
+    },
+    {
+      "tipo_ferro": "Nodular",
+      "usa_massalote": "0",
+      "n": "1750",
+      "taxa_rechupe": "0.686"
+    },
+    {
+      "tipo_ferro": "Nodular",
+      "usa_massalote": "1",
+      "n": "1812",
+      "taxa_rechupe": "0.247"
+    },
+    {
+      "tipo_ferro": "Vermicular",
+      "usa_massalote": "0",
+      "n": "664",
+      "taxa_rechupe": "0.669"
+    },
+    {
+      "tipo_ferro": "Vermicular",
+      "usa_massalote": "1",
+      "n": "668",
+      "taxa_rechupe": "0.223"
+    }
+  ],
+  "dataset_stats": {
+    "f_0": "temp_vazamento_c",
+    "mn_0": "1330.0",
+    "md_0": "1410.18",
+    "mx_0": "1500.0",
+    "f_1": "modulo_geometrico_cm",
+    "mn_1": "0.3",
+    "md_1": "1.81",
+    "mx_1": "6.0",
+    "f_2": "espessura_parede_mm",
+    "mn_2": "4.0",
+    "md_2": "22.05",
+    "mx_2": "87.2",
+    "f_3": "teor_carbono_pct",
+    "mn_3": "2.9",
+    "md_3": "3.5",
+    "mx_3": "4.1",
+    "f_4": "teor_silicio_pct",
+    "mn_4": "1.4",
+    "md_4": "2.3",
+    "mx_4": "3.2",
+    "f_5": "inoculacao_kg_t",
+    "mn_5": "0.0",
+    "md_5": "0.3",
+    "mx_5": "0.6",
+    "f_6": "tempo_solidificacao_s",
+    "mn_6": "10.0",
+    "md_6": "268.67",
+    "mx_6": "2094.0",
+    "f_7": "taxa_resfriamento_cs",
+    "mn_7": "0.1",
+    "md_7": "2.33",
+    "mx_7": "6.98"
+  },
+  "avaliacao": {
+    "n": 1750,
+    "auc": 0.8965,
+    "acuracia_0_5": 0.8217,
+    "brier": 0.1226,
+    "matriz": {
+      "tp": 517,
+      "fp": 104,
+      "fn": 208,
+      "tn": 921
+    },
+    "calibracao": [
+      {
+        "decil": 1,
+        "p_media": 0.04,
+        "taxa_real": 0.034
+      },
+      {
+        "decil": 2,
+        "p_media": 0.071,
+        "taxa_real": 0.074
+      },
+      {
+        "decil": 3,
+        "p_media": 0.115,
+        "taxa_real": 0.109
+      },
+      {
+        "decil": 4,
+        "p_media": 0.179,
+        "taxa_real": 0.143
+      },
+      {
+        "decil": 5,
+        "p_media": 0.257,
+        "taxa_real": 0.229
+      },
+      {
+        "decil": 6,
+        "p_media": 0.368,
+        "taxa_real": 0.36
+      },
+      {
+        "decil": 7,
+        "p_media": 0.511,
+        "taxa_real": 0.526
+      },
+      {
+        "decil": 8,
+        "p_media": 0.71,
+        "taxa_real": 0.731
+      },
+      {
+        "decil": 9,
+        "p_media": 0.896,
+        "taxa_real": 0.943
+      },
+      {
+        "decil": 10,
+        "p_media": 0.968,
+        "taxa_real": 0.994
+      }
+    ],
+    "shap_aditividade_erro_max": 0.0027,
+    "shap_aditividade_erro_medio": 0.00032
+  },
+  "sensibilidade": {
+    "referencia": {
+      "tipo_ferro": "Nodular",
+      "temp_vazamento_c": 1420.0,
+      "modulo_geometrico_cm": 2.0,
+      "espessura_parede_mm": 24.0,
+      "teor_carbono_pct": 3.5,
+      "teor_silicio_pct": 2.3,
+      "inoculacao_kg_t": 0.2,
+      "tempo_solidificacao_s": 220.0,
+      "taxa_resfriamento_cs": 1.5,
+      "usa_massalote": 0
+    },
+    "curvas": {
+      "usa_massalote": [
+        {
+          "valor": 0,
+          "prob": 0.919
+        },
+        {
+          "valor": 1,
+          "prob": 0.283
+        }
+      ],
+      "tipo_ferro": [
+        {
+          "valor": "Cinzento",
+          "prob": 0.872
+        },
+        {
+          "valor": "Vermicular",
+          "prob": 0.913
+        },
+        {
+          "valor": "Nodular",
+          "prob": 0.919
+        }
+      ],
+      "modulo_geometrico_cm": [
+        {
+          "valor": 0.5,
+          "prob": 0.54
+        },
+        {
+          "valor": 1.0,
+          "prob": 0.643
+        },
+        {
+          "valor": 2.0,
+          "prob": 0.919
+        },
+        {
+          "valor": 3.0,
+          "prob": 0.941
+        },
+        {
+          "valor": 4.0,
+          "prob": 0.945
+        },
+        {
+          "valor": 5.0,
+          "prob": 0.945
+        }
+      ],
+      "temp_vazamento_c": [
+        {
+          "valor": 1340,
+          "prob": 0.867
+        },
+        {
+          "valor": 1380,
+          "prob": 0.898
+        },
+        {
+          "valor": 1420,
+          "prob": 0.919
+        },
+        {
+          "valor": 1460,
+          "prob": 0.947
+        },
+        {
+          "valor": 1500,
+          "prob": 0.947
+        }
+      ],
+      "inoculacao_kg_t": [
+        {
+          "valor": 0.0,
+          "prob": 0.945
+        },
+        {
+          "valor": 0.1,
+          "prob": 0.938
+        },
+        {
+          "valor": 0.2,
+          "prob": 0.919
+        },
+        {
+          "valor": 0.4,
+          "prob": 0.873
+        },
+        {
+          "valor": 0.6,
+          "prob": 0.801
+        }
+      ],
+      "teor_carbono_pct": [
+        {
+          "valor": 3.0,
+          "prob": 0.939
+        },
+        {
+          "valor": 3.3,
+          "prob": 0.921
+        },
+        {
+          "valor": 3.6,
+          "prob": 0.898
+        },
+        {
+          "valor": 3.9,
+          "prob": 0.87
+        }
+      ]
+    }
+  },
+  "shap_global": [
+    {
+      "feature": "usa_massalote",
+      "importancia": "1.3037",
+      "rank": "1"
+    },
+    {
+      "feature": "modulo_geometrico_cm",
+      "importancia": "0.7188",
+      "rank": "2"
+    },
+    {
+      "feature": "tipo_ferro",
+      "importancia": "0.2689",
+      "rank": "3"
+    },
+    {
+      "feature": "inoculacao_kg_t",
+      "importancia": "0.2445",
+      "rank": "4"
+    },
+    {
+      "feature": "teor_carbono_pct",
+      "importancia": "0.2333",
+      "rank": "5"
+    },
+    {
+      "feature": "tempo_solidificacao_s",
+      "importancia": "0.2308",
+      "rank": "6"
+    },
+    {
+      "feature": "espessura_parede_mm",
+      "importancia": "0.1932",
+      "rank": "7"
+    },
+    {
+      "feature": "taxa_resfriamento_cs",
+      "importancia": "0.1876",
+      "rank": "8"
+    },
+    {
+      "feature": "temp_vazamento_c",
+      "importancia": "0.175",
+      "rank": "9"
+    },
+    {
+      "feature": "teor_silicio_pct",
+      "importancia": "0.1304",
+      "rank": "10"
+    }
+  ],
+  "casos_app": [
+    {
+      "texto": "Cabeçote em ferro cinzento, espessura 12 mm, 3,6% C e 2,4% Si, com alimentador, vazado a 1400 °C.",
+      "prob": 0.0491,
+      "classe": "Baixo",
+      "assumidos": [
+        "modulo_geometrico_cm",
+        "inoculacao_kg_t",
+        "tempo_solidificacao_s",
+        "taxa_resfriamento_cs"
+      ],
+      "features": {
+        "tipo_ferro": "Cinzento",
+        "temp_vazamento_c": 1400.0,
+        "modulo_geometrico_cm": 1.0,
+        "espessura_parede_mm": 12.0,
+        "teor_carbono_pct": 3.6,
+        "teor_silicio_pct": 2.4,
+        "inoculacao_kg_t": 0.3,
+        "tempo_solidificacao_s": 60.0,
+        "taxa_resfriamento_cs": 2.0,
+        "usa_massalote": 1
+      },
+      "top_shap": [
+        {
+          "feature": "usa_massalote",
+          "label": "Massalote/alimentador",
+          "valor": "sim",
+          "shap": -1.2048
+        },
+        {
+          "feature": "modulo_geometrico_cm",
+          "label": "Módulo geométrico (cm)",
+          "valor": "1",
+          "shap": -0.5692
+        },
+        {
+          "feature": "tipo_ferro",
+          "label": "Tipo de ferro",
+          "valor": "Cinzento",
+          "shap": -0.2413
+        }
+      ],
+      "explicacao": "O modelo previu risco baixo de rechupe (5%) porque os fatores dominantes empurram fortemente a predição para baixo. O maior impacto vem do massalote/alimentador presente (SHAP −1.205), que garante reservatório de metal líquido para compensar a contração durante a solidificação. Em seguida, o módulo geométrico = 1 cm (SHAP −0.569) indica peça com solidificação relativamente rápida e controlada, e o ferro cinzento (SHAP −0.241) favorece a expansão da grafita, reduzindo a tendência ao vazio interno. Em sentido contrário, apenas a inoculação = 0,3 kg/t puxou levemente para cima (SHAP +0.113), mas seu efeito é pequeno e insuficiente para alterar o resultado final."
+    },
+    {
+      "texto": "Carcaça de diferencial nodular, seção espessa de 50 mm, módulo alto, sem resfriador nem massalote, inoculação 0,1 kg/t, vazamento a 1470 °C.",
+      "prob": 0.9852,
+      "classe": "Alto",
+      "assumidos": [
+        "modulo_geometrico_cm",
+        "teor_carbono_pct",
+        "teor_silicio_pct",
+        "tempo_solidificacao_s",
+        "taxa_resfriamento_cs"
+      ],
+      "features": {
+        "tipo_ferro": "Nodular",
+        "temp_vazamento_c": 1470.0,
+        "modulo_geometrico_cm": 4.17,
+        "espessura_parede_mm": 50.0,
+        "teor_carbono_pct": 3.6,
+        "teor_silicio_pct": 2.4,
+        "inoculacao_kg_t": 0.1,
+        "tempo_solidificacao_s": 1200.0,
+        "taxa_resfriamento_cs": 0.5,
+        "usa_massalote": 0
+      },
+      "top_shap": [
+        {
+          "feature": "usa_massalote",
+          "label": "Massalote/alimentador",
+          "valor": "não",
+          "shap": 1.5091
+        },
+        {
+          "feature": "modulo_geometrico_cm",
+          "label": "Módulo geométrico (cm)",
+          "valor": "4,17",
+          "shap": 1.2234
+        },
+        {
+          "feature": "tempo_solidificacao_s",
+          "label": "Tempo de solidificação (s)",
+          "valor": "1200",
+          "shap": 0.5342
+        }
+      ],
+      "explicacao": "O modelo previu risco Alto (99%) principalmente pela ausência de massalote/alimentador (SHAP +1.509), pois sem reservatório de metal líquido não há compensação da contração volumétrica durante a solidificação, favorecendo o rechupe. O segundo fator foi o módulo geométrico elevado de 4,17 cm (SHAP +1.223), que indica seção robusta com solidificação lenta e tendência a vazios internos. Contribuiu também o tempo de solidificação de 1200 s (SHAP +0.534), reforçando esse resfriamento prolongado. Em sentido contrário, apenas o carbono em 3,6% (SHAP -0.113) e o silício em 2,4% (SHAP -0.065) reduziram levemente o risco, pela maior expansão grafítica, mas de forma insuficiente para alterar a predição."
+    },
+    {
+      "texto": "Cubo de roda em ferro vermicular, parede de 25 mm, 3,7% C, 2,5% Si, inoculação 0,3 kg/t, com massalote, vazamento a 1420 °C.",
+      "prob": 0.1857,
+      "classe": "Baixo",
+      "assumidos": [
+        "modulo_geometrico_cm",
+        "tempo_solidificacao_s",
+        "taxa_resfriamento_cs"
+      ],
+      "features": {
+        "tipo_ferro": "Vermicular",
+        "temp_vazamento_c": 1420.0,
+        "modulo_geometrico_cm": 2.08,
+        "espessura_parede_mm": 25.0,
+        "teor_carbono_pct": 3.7,
+        "teor_silicio_pct": 2.5,
+        "inoculacao_kg_t": 0.3,
+        "tempo_solidificacao_s": 260.0,
+        "taxa_resfriamento_cs": 1.5,
+        "usa_massalote": 1
+      },
+      "top_shap": [
+        {
+          "feature": "usa_massalote",
+          "label": "Massalote/alimentador",
+          "valor": "sim",
+          "shap": -1.5193
+        },
+        {
+          "feature": "modulo_geometrico_cm",
+          "label": "Módulo geométrico (cm)",
+          "valor": "2,08",
+          "shap": 0.474
+        },
+        {
+          "feature": "teor_carbono_pct",
+          "label": "Carbono (%C)",
+          "valor": "3,7",
+          "shap": -0.3557
+        }
+      ],
+      "explicacao": "O principal fator foi a presença de massalote/alimentador (SHAP -1.519), que reduz fortemente o risco por fornecer metal líquido durante a contração na solidificação, compensando o volume e evitando o vazio de rechupe. O teor de carbono de 3,7% (SHAP -0.356) também reduziu o risco, pois favorece a expansão grafítica que contrabalança a contração. Em sentido contrário, o módulo geométrico de 2,08 cm (SHAP +0.474) foi o maior fator de aumento, já que módulos elevados retardam a solidificação e concentram o ponto quente, favorecendo o rechupe. Mesmo assim, a forte ação do massalote predominou, resultando na probabilidade final de 19%, classificada como risco Baixo."
+    }
+  ]
+}

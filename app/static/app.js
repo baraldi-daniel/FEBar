@@ -280,7 +280,7 @@ function Assistente(){
           else if(o.tipo==="final"){
             if(o.genie_conv) genieRef.current=o.genie_conv;
             setMsgs(m=>[...m,{who:"ai",texto:o.resposta,cards:o.cards,fontes:o.fontes,ferramentas:o.ferramentas,sql:o.sql,
-              assunto:o.assunto,cache:o.cache,bloqueado:o.bloqueado,ms:o.ms,passos}]);
+              assunto:o.assunto,cache:o.cache,bloqueado:o.bloqueado,ms:o.ms,passos,genie:o.genie}]);
           }
         }
       }
@@ -327,7 +327,8 @@ function Assistente(){
               ${(m.cards||[]).map((c,j)=>html`<${ResCard} key=${j} c=${c}/>`)}
               ${m.equip?html`<${EquipResultado} r=${m.equip}/>`:null}
               ${m.fontes&&m.fontes.filter(f=>f.tipo==="DOC").length?html`<div class="src">📄 ${m.fontes.filter(f=>f.tipo==="DOC").map((f,j)=>html`<span key=${j}>${j?" · ":""}${f.arquivo} (p. ${f.pagina} · ${f.secao}) <span class="cap">${f.similaridade}</span></span>`)}</div>`:null}
-              ${m.sql?html`<div class="src">📊 Fonte: ${tabelasDeSql(m.sql)} (Genie)</div>`:null}
+              ${m.sql?html`<div class="src">📊 Fonte: ${tabelasDeSql(m.sql)} (Genie${m.genie&&m.genie.statement_id?html` · statement <code title=${"conversa "+m.genie.conversation_id+" · mensagem "+m.genie.message_id}>${m.genie.statement_id}</code>`:""})
+                <details style=${{marginTop:"4px"}}><summary style=${{cursor:"pointer"}}>ver SQL executado</summary><pre class="sqlbox">${m.sql}</pre></details></div>`:null}
               ${m.assunto||m.cache?html`<div class="src">${m.assunto?html`🏷️ ${m.assunto}`:null}${m.cache&&m.cache.hit?html` · ⚡ cache Lakebase (similaridade ${m.cache.similaridade})`:null}${m.ms?html` · ${(m.ms/1000).toFixed(1)}s`:null}</div>`:null}
             </div>
           </div>`)}

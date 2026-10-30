@@ -1,0 +1,100 @@
+# Log real da execução do bootstrap.py criando o Fundalis IA do zero num conjunto NOVO de recursos
+# (schemas dadosapp.fundalis_build*, Lakebase fundalis-build, app fundalis-build, endpoint fundalis_build_rechupe).
+# Após a verificação esses recursos de teste foram apagados; a instalação principal (fundalis-ia) segue no ar.
+# E-mail e id do service principal substituídos; linhas de espera ('… aguardando') removidas.
+
+# bootstrap.py — execução do zero
+# início: 2026-10-30T00:09:28Z
+# comando: python3 bootstrap.py --config config.build.env
+
+
+▶ preflight — Confere autenticação, warehouse e as features que o app usa.
+   ✓ autenticado como <usuário> em https://fe-sandbox-deployment.cloud.databricks.com
+   ✓ warehouse escolhido: Serverless Starter Warehouse (76ebfd04694394df)
+   ✓ modelos disponíveis no AI Gateway: system.ai.databricks-claude-opus-4-8, system.ai.qwen3-embedding-0-6b
+   ✓ AI Gateway, Lakebase e SQL warehouse acessíveis
+   (3 s)
+
+▶ uc — Catálogo, schemas, tabelas de demonstração, máscaras de PII, tabelas de documentos/assuntos e volumes.
+   ✓ catálogo dadosapp já existe
+   ✓ schemas dadosapp.fundalis_build e dadosapp.fundalis_build_cdc
+   ✓ scripts/seed_uc_1.sql
+   ✓ scripts/seed_uc_2.sql
+   ✓ scripts/gov.sql
+   (50 s)
+
+▶ lakebase — Projeto Lakebase (Postgres), DDL (cadastro + memória do agente) e 400 leads fictícios.
+   ✓ projeto Lakebase fundalis-build criado
+   ✓ host ep-cold-resonance-d15onjg3.database.us-west-2.cloud.databricks.com
+   ✓ DDL aplicado (cadastro.leads, cadastro.lead_anexos, agente.doc_chunks/llm_cache/conversas/prompts + pgvector)
+(400, 285)
+   ✓ 400 leads fictícios inseridos
+   (18 s)
+
+▶ cdc — CDC Lakebase → Unity Catalog e as views com máscara de PII.
+   ✓ cdf-config criado
+   ✓ views dadosapp.fundalis_build.leads / leads_anexos (PII mascarada) e função buscar_documentos
+   (21 s)
+
+▶ gateway — Model service do agente (Opus 4.8) no AI Gateway + inference table.
+   ✓ model service dadosapp.fundalis_build.fundalis_build_agente criado
+   ✓ inference table dadosapp.fundalis_build.fundalis_build_agente_payload ligada
+   (5 s)
+
+▶ modelo — Treina o modelo de rechupe (notebook serverless), registra no UC e serve no Model Serving.
+   treinando (run 34749036694906)…
+   ✓ modelo dadosapp.fundalis_build.rechupe_model registrado (versões [1])
+   ✓ endpoint fundalis_build_rechupe criado (fica pronto em ~10–20 min; o resto continua)
+   (87 s)
+
+▶ genie — Genie space (tabelas + trechos dos PDFs + função de busca nos documentos).
+   ✓ Genie space 01f1d3f69f291fde9b76dc8f7d6d6b1e
+   (2 s)
+
+▶ app — Databricks App: cria, liga os recursos, dá as permissões ao service principal e faz o deploy.
+   ✓ app fundalis-build criado
+   ✓ service principal <service-principal-do-app> · https://fundalis-build-7474656635280117.aws.databricksapps.com
+   ✓ recursos do app: warehouse, lakebase, genie-space, rechupe
+   ✓ grants no Unity Catalog
+   ✓ grants no Postgres (cadastro, agente)
+   ✓ deploy concluído → https://fundalis-build-7474656635280117.aws.databricksapps.com
+   (204 s)
+
+▶ docs — Envia os PDFs fictícios da base de conhecimento pelo próprio app (ai_parse_document → Delta + pgvector).
+   ✓ 4 PDF(s) processados
+   (41 s)
+
+▶ teste — Smoke test: saúde, painel, agente (Genie + RAG + guardrail) e rechupe.
+   ✓ painel: receita R$ 278.6 mi
+   ✓ agente: ['Genie', 'Documentos (RAG)'] → Para 8 mil peças/ano, o desconto é de **6% sobre a tabela**, pois está na faixa de 5.001 a 20.000 peças. Essa condição r
+   ✓ guardrail: bloqueado=True (Fora de escopo)
+   ! endpoint fundalis_build_rechupe ainda não está pronto — rode `python3 bootstrap.py --etapas teste` depois
+   (41 s)
+
+Pronto. App: https://fundalis-build-7474656635280117.aws.databricksapps.com
+Estado em ./.build/estado.json; variáveis dos scripts em .env.
+Passo manual opcional: service policies do AI Gateway (README → 'Service policies').
+
+# fim: 2026-10-30T00:17:28Z · código de saída: 0 (terminou em "Pronto")
+
+
+# --- segunda passada só do smoke test, depois que o endpoint do modelo ficou READY
+# início: 2026-10-30T00:21:46Z · comando: python3 bootstrap.py --config config.build.env --etapas teste
+
+
+# --- segunda passada só do smoke test, depois que o endpoint do modelo ficou READY
+# início: 2026-10-30T00:23:22Z · comando: python3 bootstrap.py --config config.build.env --etapas teste
+
+
+▶ teste — Smoke test: saúde, painel, agente (Genie + RAG + guardrail) e rechupe.
+   ✓ painel: receita R$ 278.6 mi
+   ✓ agente: ['Genie', 'Documentos (RAG)'] → Para um volume anual de 8.000 peças, o desconto é de **6% sobre a tabela**, pois está na faixa de 5.001 a 20.000 peças. 
+   ✓ guardrail: bloqueado=True (Fora de escopo)
+   ✓ rechupe: 98% (Alto) com 10 valores SHAP
+   (33 s)
+
+Pronto. App: https://fundalis-build-7474656635280117.aws.databricksapps.com
+Estado em ./.build/estado.json; variáveis dos scripts em .env.
+Passo manual opcional: service policies do AI Gateway (README → 'Service policies').
+
+# fim: 2026-10-30T00:23:57Z · código de saída: 0 (terminou em "Pronto")
