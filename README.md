@@ -246,7 +246,8 @@ app/                 Databricks App (FastAPI + React/htm sem build)
   app.yaml           comando e variáveis (APP_*); recursos do app: sql-warehouse, lakebase, genie-space, rechupe
   static/            front-end (index.html, app.js, logos SVG, vendor/: React, htm, Mermaid)
 notebooks/
-  10_rechupe_model.py  gera dados sintéticos, treina GradientBoosting, calcula SHAP, registra no UC
+  10_rechupe_model.py            gera dados sintéticos, treina GradientBoosting, calcula SHAP, registra no UC
+  10_rechupe_model_execucao.ipynb  o mesmo notebook com as saídas da execução real
 scripts/             SQL e seeds aplicados pelo bootstrap, Genie, PDFs fictícios e scripts de evidência
 pdfs/                PDFs fictícios (base de conhecimento e fichas de cadastro)
 ```
@@ -300,6 +301,8 @@ reconhece bloqueios de policy (`databricks_service_policy`) e mostra o passo em 
   o app publicado respondendo ([`EVIDENCIAS.md`](evidencias/EVIDENCIAS.md)), as consultas do agente rastreadas no
   Genie, no Query History do warehouse e na inference table ([`QUERIES.md`](evidencias/QUERIES.md)) e as métricas do
   modelo de rechupe ([`RECHUPE.md`](evidencias/RECHUPE.md)). Cada relatório tem o JSON bruto ao lado.
+- [`notebooks/10_rechupe_model_execucao.ipynb`](notebooks/10_rechupe_model_execucao.ipynb) — o notebook de treino **com as saídas
+  das células** da execução real (AUC 0,901, relatório de classificação, SHAP, registro da v2 no Unity Catalog).
 - [`COMO_FOI_CONSTRUIDO.md`](COMO_FOI_CONSTRUIDO.md) — como a IA (Claude Code) foi usada durante o build: divisão de
   papéis, método, linha do tempo, problemas achados nos testes, limites e governança.
 

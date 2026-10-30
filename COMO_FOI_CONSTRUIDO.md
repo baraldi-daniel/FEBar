@@ -27,7 +27,7 @@ execução estão em [`evidencias/`](evidencias/README.md).
    proxy que serve o front local e repassa `/api` ao app publicado).
 5. **Correção** quando o teste falhava, e só então o resumo para a pessoa.
 6. **Memória entre sessões:** a IA mantém notas persistentes (fora do repositório) sobre apps anteriores; foi assim que o
-   ponto de partida — um app semelhante feito antes para outro cliente — foi localizado e recriado neste workspace.
+   ponto de partida — um app semelhante feito antes — foi localizado e recriado neste workspace.
 
 ## Onde a IA acelerou e onde mudou o trabalho
 
